@@ -1,66 +1,95 @@
 class Barrier{ //barriers! aka walls
-  float x;
-  float y;
-  float bwidth; //how WIDE
-  float blength; //how TALL
-  float midx; //the barrier's x coord midpoint - used for collision logic
-  float midy; //the barrier's y coord midpoint - used for collision logic
-  float endx;
-  float endy;
+  float x, y;
+  float x_length; //how wide it is
+  float y_length; //how tall it is
+  float endx; //edge of the x_length
+  float endy; //edge of the y_length
   
-Barrier(float _x, float _y, float w, float l){ //skeleton for testing
+Barrier(float _x, float _y, float l,float w){
     x = _x;
     y = _y;
-    bwidth = w;
-    blength = l;
-    midx = x + blength/2;
-    midy = y + bwidth/2;
-    endx = x + blength;
-    endy = y + bwidth;
+    x_length = l; //has to be bigger than final_speed or else player will teleport
+    y_length = w; //has to be bigger than final_speed or else player will teleport
+    endx = x + x_length;
+    endy = y + y_length;
+  }
+
+  Barrier(){ //skeleton for testing
+    x = 100;
+    y = 100;
+    y_length = 5; //has to be bigger than final_speed or else player will teleport
+    x_length = 100; //has to be bigger than final_speed or else player will teleport
+    endx = x + x_length;
+    endy = y + y_length;
   }
   
   void display(){ //displays barriers on screen
-    rect(x,y,blength,bwidth);
+    rect(x-final_speed,y-final_speed,x_length+2*final_speed,y_length+2*final_speed);
+    //final_speed is required to make the barrier visually aligned with the code
   }
 }
 
+enum checkResult {
+  NotTouched,
+  TouchRight,
+  TouchLeft,
+  TouchUp,
+  TouchDown
+}
+
 //barrier collision logic
-boolean check(){ //checks if the player is touching the barrier
+checkResult collisionX(){ //checks if the player is touching the barrier horizontally
   for(Barrier b: map1){
     boolean overlapX = p1.x + p1.size >= b.x && p1.x - p1.size <= b.endx;
     boolean overlapY = p1.y + p1.size >= b.y && p1.y - p1.size <= b.endy;
-      if (overlapX && overlapY)
-        return true;
+      if (overlapX && overlapY) { 
+        if (check_right(b)) {
+          return checkResult.TouchRight; //player is touching the right
+        }
+        else if (check_left(b)) {
+          return checkResult.TouchLeft; //player is touching the left
+        } 
+        
+      }
   }
+  return checkResult.NotTouched;
+}
+
+checkResult collisionY(){ //checks if the player is touching the barrier vertically
+  for(Barrier b: map1){
+    boolean overlapX = p1.x + p1.size >= b.x && p1.x - p1.size <= b.endx;
+    boolean overlapY = p1.y + p1.size >= b.y && p1.y - p1.size <= b.endy;
+      if (overlapX && overlapY) { 
+        if (check_up(b)){
+          return checkResult.TouchUp; //player is touching the top
+        } 
+        else if(check_down(b)){
+          return checkResult.TouchDown; //player is touching the bottom
+        }
+      }
+  }
+  return checkResult.NotTouched;
+}
+
+boolean check_right(Barrier b){ //checks if the player is on the right of the barrier
+    if((p1.x-p1.size)<=b.endx && (p1.x+p1.size)>=b.endx)
+      return true;
   return false;
 }
-boolean check_right(){ //checks if the player is on the right of the barrier
-  for(Barrier b: map1){
-    if(abs(b.midx-p1.x)<=b.blength/2+p1.size && p1.x>=b.endx)
+boolean check_left(Barrier b){ //checks if the player is on the left of the barrier
+    if((p1.x+p1.size)>=b.x && (p1.x-p1.size)<=b.x)
+      return true;
+  return false;
+}
+boolean check_up(Barrier b){ //checks if the player is on the top of the barrier
+    if((p1.y+p1.size)>=b.y && (p1.y-p1.size)<=b.y){
       return true;
   }
   return false;
 }
-boolean check_left(){ //checks if the player is on the left of the barrier
-  for(Barrier b: map1){
-    if(abs(b.midx-p1.x)<b.blength/2+p1.size+p1.speed && p1.x<=b.x)
+boolean check_down(Barrier b){ //checks if the player is on the bottom of the barrier
+    if((p1.y-p1.size)<=b.endy && (p1.y+p1.size)>=b.endy){
       return true;
-  }
-  return false;
-}
-boolean check_up(){ //checks if the player is on the top of the barrier
-  for(Barrier b: map1){
-    if(abs(b.midy-p1.y)<b.bwidth/2+p1.size+p1.speed && p1.y<=b.y){
-      return true;
-    }
-  }
-  return false;
-}
-boolean check_down(){ //checks if the player is on the bottom of the barrier
-  for(Barrier b: map1){
-    if(abs(b.midy-p1.y)<b.bwidth/2+p1.size && p1.y>=b.endy){
-      return true;
-    }
   }
   return false;
 }
