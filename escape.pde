@@ -3,6 +3,7 @@ Barrier[] map1;
 
 //Player
 Player p1;
+final float final_speed = 5; //the player's speed - needed for collision logic
 
 //movement variables
 boolean upPressed;
