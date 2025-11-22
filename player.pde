@@ -1,13 +1,12 @@
 class Player{ //player! aka you
-  float x;
-  float y;
+  float x, y;
   float speed;
   float size;
   
   Player(){ //might make some customization later
     x=100;
     y=200;
-    speed = 5;
+    speed = final_speed;
     size = 15; //the radius of the player (who is a circle)
   }
 
@@ -15,20 +14,25 @@ class Player{ //player! aka you
     circle(x,y,size*2);
   }
   
-  void move_right() { //if player isn't touching the left of a barrier, move right
-    if(!(check() && check_left()) && x < width) 
-      x += speed;
+  void move_right() { //move right
+    x+=speed;
+    if((collisionX()==checkResult.TouchLeft) || x>width) { //predicts collision - if yes, goes back
+      x -= speed;
+    }
   }
-  void move_left() { //if player isn't touching the right of a barrier, move left
-    if(!(check() && check_right()) && x > 0)
-      x-=speed;
+  void move_left() { //move left
+    x-=speed;
+    if((collisionX()==checkResult.TouchRight) || x<0) //predicts collision - if yes, goes back
+      x+=speed;
   }
-  void move_up() { //if player isn't touching the bottom of a barrier, move up
-    if(!(check() && check_down()) && y>0)
-      y-=speed;
-  }
-  void move_down() { //if player isn't touching the top of a barrier, move down
-    if(!(check() && check_up()) && y<height)
+  void move_up() { //move up
+    y-=speed;
+    if((collisionY()==checkResult.TouchDown) || y<0) //predicts collision - if yes, goes back
       y+=speed;
+  }
+  void move_down() { //move down
+    y+=speed;
+    if((collisionY()==checkResult.TouchUp) || y>height) //predicts collision - if yes, goes back
+      y-=speed;
   } 
 }
