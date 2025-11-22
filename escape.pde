@@ -14,15 +14,16 @@ void setup(){
   size(800,800);
 
   //map initialization and declaration center
-  map1 = new Barrier[1];
-  map1[0] = new Barrier();
+  map1 = new Barrier[10];
+  create_map1();
   
   p1 = new Player(); //maybe add player selection later? if i have time
 }
 
 void draw(){
   background(0);
-  map1[0].display();
+  for(Barrier b: map1)
+    b.display();
   
   p1.display();
   
