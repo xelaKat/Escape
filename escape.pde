@@ -1,4 +1,7 @@
+//Maps
 Barrier[] map1;
+
+//Player
 Player p1;
 
 //movement variables
@@ -9,10 +12,12 @@ boolean rightPressed;
 
 void setup(){
   size(800,800);
+
+  //map initialization and declaration center
   map1 = new Barrier[1];
   map1[0] = new Barrier();
   
-  p1 = new Player();
+  p1 = new Player(); //maybe add player selection later? if i have time
 }
 
 void draw(){
@@ -21,14 +26,14 @@ void draw(){
   
   p1.display();
   
-  //movement
+  //movement logic - calls the functions which actually move the player
   if(upPressed) p1.move_up();
   if(leftPressed) p1.move_left();
   if(downPressed) p1.move_down();
   if(rightPressed) p1.move_right();
 }
 
-//movement
+//movement logic (to make movement continuous)
 void keyPressed(){
   if (key=='w' || keyCode==UP) upPressed = true;
   if (key=='a' || keyCode==LEFT) leftPressed = true;
@@ -41,23 +46,4 @@ void keyReleased(){
   if (key=='a' || keyCode==LEFT) leftPressed = false;
   if (key=='s' || keyCode==DOWN) downPressed = false;
   if (key=='d' || keyCode==RIGHT) rightPressed = false;
-}
-
-boolean check_horizontal(){
-  boolean check = false;
-  for(Barrier b: map1){
-    if(abs(b.midx-p1.x)<b.blength/2+p1.size/2){
-      check = true;
-    }
-  }
-  return check;
-}
-boolean check_vertical(){
-  boolean check = false;
-  for(Barrier b: map1){
-    if(abs(b.midy-p1.y)<b.bwidth/2+p1.size/2){
-      check = true;
-    }
-  }
-  return check;
 }
