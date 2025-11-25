@@ -43,6 +43,7 @@ void draw(){
   }
   else{
     background(0);
+
     for(Barrier b: Maps.get(current_map)){ //displays all the barriers in the current map
       b.display();
     }
@@ -69,6 +70,15 @@ void draw(){
     }
 
     //Sequence of maps
+    if(current_map == 0){
+      if(frameCount>=30 && frameCount<120){
+        message_1();
+      }
+      if(frameCount>=120){
+        message_2();
+      }
+    }
+
     if(current_map == 0 && p1.x == 800 && p1.y >= 700){
       current_map = 1;
       p1.x = 0;
@@ -110,35 +120,64 @@ void mousePressed(){
     game_start = true;
     loop();
   }
-  
 }
 
 void intro(){ //start screen
-  background(0);
   noLoop();
+  background(0);
   fill(255);
+
+  textSize(100);
+  text("ESCAPE", 400,250); //title for now - make art later
+
   textSize(20);
-  text("TITLE", 400,200);
-  rect(300,300,200,100);
-  text("GAME START", 400,350);
-  //go to mousePressed
+  text("Use the WASD or arrow keys to move", 400,350);
+  text("Find the exit", 400,400);
+  text("Escape", 400,450);
+  
+  fill(200);
+  textSize(15);
+  text("Click anywhere to start",400,700);
 }
 
 void game_start(){
-  if(frameCount>=120){
+  if(frameCount>=120 && frameCount<=180){
     fill(255);
+    textSize(24);
     text("Hello?",400,400);
   }
   else if(frameCount<120 || frameCount>=180){
-    fill(0,10);
+    fill(0,18);
     rect(-5,-5,810,810);
   }
-  if(frameCount==240){
+  if(frameCount==300){
     frameCount = 0;
     game_start = false;
   }
 }
 
+float counter_1 = 0;
+String[] message = {"W", "h", "e", "r", "e", " ", "a", "m", " ", "I", "?"};
+String display_1 = "";
+
+void message_1(){
+  text(display_1, 400,330);
+  if(counter_1%1==0 && counter_1<message.length){
+    display_1 += message[int(counter_1)];
+  }
+  counter_1+=0.25;
+}
+
+float counter_2 = 0;
+String[] message_again = {"I", " ", "h", "a", "v", "e", " ", "t", "o", " ", "g", "e", "t", " ", "o", "u", "t", " ", "o", "f", " ", "h", "e", "r", "e", ".", ".", "."};
+String display_2 = "";
+void message_2(){
+  text(display_2, 400,330);
+  if(counter_2%1==0 && counter_2<message_again.length){
+    display_2 += message_again[int(counter_2)];
+  }
+  counter_2+=0.25;
+}
 
 void game_over(){
   background(0);
@@ -149,7 +188,7 @@ void game_over(){
   text("GAME OVER", 400,300);
 
   //final time
-  int time_min = int(frameCount/600);
+  int time_min = int(frameCount/3600);
   int time_sec = int(frameCount/60);
   textSize(35);
   text("Final time: " + time_min + " minutes " + time_sec + " seconds", 400,400);
