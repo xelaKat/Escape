@@ -18,6 +18,7 @@ boolean rightPressed;
 
 //sequence
 boolean intro = true;
+boolean tutorial = true;
 boolean game_start = true;
 ///////////////////
 
@@ -29,11 +30,7 @@ void setup(){
   //map initialization and declaration center
   Maps = new ArrayList<Barrier[]>();
   current_map = 0;
-  map0();
-  map1();
-  map2();
-  map3();
-  map4();
+  map0(); map1(); map2(); map3(); map4(); map5(); map6(); map7(); map8(); //creates all the maps - go to the maps tab
 
   //ghost initialization and declaration center
   ghosts = new ArrayList<Ghost>();
@@ -51,7 +48,7 @@ void draw(){
   else{
     background(0);
 
-    sequence(); //sequence function in sequence file - map logic & creates ghosts
+    sequence(); //map logic & creates ghosts - go to the sequence file
 
     p1.display(); //displays the player
 
@@ -62,9 +59,6 @@ void draw(){
     for(Ghost g: ghosts){ //displays the ghosts
       g.display();
     }
-
-    //// Sequence of maps /////
-    sequence(); //sequence tab
     
     //player movement logic - combined with void keyPressed and keyReleased
     if(upPressed) p1.move_up();
@@ -90,17 +84,21 @@ void draw(){
 
 //movement logic (to make movement continuous)
 void keyPressed(){
-  if (key=='w' || keyCode==UP) upPressed = true;
-  if (key=='a' || keyCode==LEFT) leftPressed = true;
-  if (key=='s' || keyCode==DOWN) downPressed = true;
-  if (key=='d' || keyCode==RIGHT) rightPressed = true;
+  if(!tutorial){
+    if (key=='w' || keyCode==UP) upPressed = true;
+    if (key=='a' || keyCode==LEFT) leftPressed = true;
+    if (key=='s' || keyCode==DOWN) downPressed = true;
+    if (key=='d' || keyCode==RIGHT) rightPressed = true;
+  }
 }
 
 void keyReleased(){
-  if (key=='w' || keyCode==UP) upPressed = false;
-  if (key=='a' || keyCode==LEFT) leftPressed = false;
-  if (key=='s' || keyCode==DOWN) downPressed = false;
-  if (key=='d' || keyCode==RIGHT) rightPressed = false;
+  if(!tutorial){
+    if (key=='w' || keyCode==UP) upPressed = false;
+    if (key=='a' || keyCode==LEFT) leftPressed = false;
+    if (key=='s' || keyCode==DOWN) downPressed = false;
+    if (key=='d' || keyCode==RIGHT) rightPressed = false;
+  }
 }
 
 void mousePressed(){
