@@ -8,13 +8,9 @@ void map0(){
 }
 
 void map1(){ //testing for now - not the actual map
-    Barrier[] map1 = new Barrier[10];
-    for(int i = 0; i<5;i++){
-        map1[i] = new Barrier(100*i,20*i*2,100,5);
-    }
-    for(int i = 5; i<10;i++){
-        map1[i] = new Barrier(20*i*2,100*i,5,100);
-    }
+    Barrier[] map1 = new Barrier[2];
+    map1[0] = new Barrier(0,395,200,10);
+    map1[1] = new Barrier(600,395,200,10);
     Maps.add(map1);
 }
 
@@ -39,4 +35,28 @@ void map4(){
         map4[i] = new Barrier();
     }
     Maps.add(map4);
+}
+
+void map5(){
+    Barrier[] map5 = new Barrier[1];
+    map5[0] = new Barrier();
+    Maps.add(map5);
+}
+
+void map6(){
+    Barrier[] map6 = new Barrier[1];
+    map6[0] = new Barrier();
+    Maps.add(map6);
+}
+
+void map7(){
+    Barrier[] map7 = new Barrier[1];
+    map7[0] = new Barrier();
+    Maps.add(map7);
+}
+
+void map8(){
+    Barrier[] map8 = new Barrier[1];
+    map8[0] = new Barrier();
+    Maps.add(map8);
 }
