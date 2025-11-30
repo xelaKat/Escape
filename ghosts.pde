@@ -7,7 +7,7 @@ class Ghost{
         x = 400;
         y = 400;
         speed = final_speed/2;
-        size = 20; //radius of the ghost (which is a circle)
+        size = 20; //radius of the ghost (which is a circle) //!!
     }
 
     Ghost(float _x, float _y){ //controls where it spawns
@@ -43,28 +43,28 @@ class Ghost{
 
     //movement logic
     void move_right() { //move right
-        if(!tutorial){
+        if(!tutorial){ //!!
             x+=speed;
         }
     }
      void move_left() { //move left
-        if(!tutorial){
+        if(!tutorial){ //!!
             x-=speed;
         }
      }
       void move_up() { //move up
-        if(!tutorial){
+        if(!tutorial){ //!!
             y-=speed;
         }
      }
      void move_down() { //move down
-        if(!tutorial){
+        if(!tutorial){ //!!
             y+=speed;
        }
      } 
 
     void collision(){
-        if (dist(p1.x, p1.y, x, y) <= p1.size + size) {
+        if (dist(p1.x, p1.y, x, y) <= p1.size + size) { //!!
             game_over();
         }
     }
