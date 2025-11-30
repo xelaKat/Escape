@@ -3,16 +3,34 @@ class Ghost{
     float speed;
     float size;
 
-    Ghost(){ //skeleton for testing
-        x = 500;
-        y = 500;
+    Ghost(){ //default
+        x = 400;
+        y = 400;
         speed = final_speed/2;
-        size = 10; //radius of the ghost (which is a circle)
+        size = 20; //radius of the ghost (which is a circle)
+    }
+
+    Ghost(float _x, float _y){ //controls where it spawns
+        x = _x;
+        y = _y;
+        speed = final_speed/2;
+        size = 20; //radius of the ghost (which is a circle)
+    }
+
+    Ghost(float _x, float _y, float s, float sz){ //controls all aspects of the ghost
+        x = _x;
+        y = _y;
+        speed = s;
+        size = sz; //radius of the ghost (which is a circle :) )
     }
 
     void display(){
         fill(255,150);
         circle(x,y,size*2);
+
+        textSize(size*3/2); //makes text proportional to the ghost size
+        fill(0);
+        text(">:)", x,y+textWidth(">")/2); //ghosts are evil! >:)
     }
 
     //check player position vs ghost position
@@ -25,23 +43,29 @@ class Ghost{
 
     //movement logic
     void move_right() { //move right
-        x+=speed;
+        if(!tutorial){
+            x+=speed;
+        }
     }
      void move_left() { //move left
-       x-=speed;
+        if(!tutorial){
+            x-=speed;
+        }
      }
       void move_up() { //move up
-        y-=speed;
+        if(!tutorial){
+            y-=speed;
+        }
      }
      void move_down() { //move down
-       y+=speed;
+        if(!tutorial){
+            y+=speed;
+       }
      } 
 
     void collision(){
-        boolean overlapX = p1.x + p1.size >= x && p1.x - p1.size <= x + size;
-        boolean overlapY = p1.y + p1.size >= y && p1.y - p1.size <= y + size;
-        if (overlapX && overlapY) {
+        if (dist(p1.x, p1.y, x, y) <= p1.size + size) {
             game_over();
-          }
+        }
     }
 }
