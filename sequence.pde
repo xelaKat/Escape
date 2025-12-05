@@ -1,13 +1,13 @@
 void sequence() {
   if (current_map == 0) {
-    if (frameCount>=30 && frameCount<120) {
+    if (!tutorial && frameCount>=60 && frameCount<150) {
       message_1();
     }
-    if (frameCount>=120) {
+    if (!tutorial && frameCount>=150) {
       message_2();
     }
-    if(frameCount>=210){
-      tutorial = false; //move after the messages are done playing
+    if(frameCount>=300){
+      pause = false; //move after the messages are done playing
     }
 
     if (p1.x==800 && p1.y>=700) { //go to map1
@@ -43,7 +43,8 @@ void sequence() {
 
 
   //// MAP1 ////
-  if (current_map == 1) {
+  //Stats: ONE ghost, ONE key
+  if(current_map == 1) {
     message_3();
 
     if (p1.x==0 && p1.y>=700){ //go back to map0
@@ -71,6 +72,7 @@ void sequence() {
 
 
   //// MAP2 ////
+  //Stats: ZERO ghost, TWO key
   if (current_map == 2) {
     if (p1.x>=700 && p1.y==800){ //go back to map0
       current_map = 0;
@@ -89,7 +91,8 @@ void sequence() {
   }
 
 
-  //// MAP3 //// (no ghosts)
+  //// MAP3 ////
+  //Stats: ZERO ghost, ONE key
   if(current_map == 3){
     if(p1.x==800 && p1.y<=100){ //go back to map0
       current_map = 0;
@@ -114,6 +117,7 @@ void sequence() {
 
 
   //// MAP4 ////
+  //Stats: ?? ghost, ZERO key
   if(current_map == 4){
     if(p1.x <= 100 && p1.y==0){ //go back to map0
       current_map = 0;
@@ -140,6 +144,7 @@ void sequence() {
 
 
   //// MAP5 ////
+  //Stats: ?? ghost, ONE key
   if(current_map == 5){
     if(p1.x==0 && p1.y<=100){ //go to map1
       current_map = 1;
@@ -159,6 +164,7 @@ void sequence() {
 
 
   //// MAP6 ////
+  //Stats: ?? ghost, ONE key
   if(current_map == 6){
     if(p1.x==800 && p1.y>=700){ //go to map3
       current_map = 3;
@@ -177,6 +183,7 @@ void sequence() {
 
 
   //// MAP7 ////
+  //Stats: LOTS ghost, ZERO key
   if(current_map == 7){
     message_5();
 
@@ -205,6 +212,7 @@ void sequence() {
 
 
   //// MAP8 ////
+  //Stats: ESCAPE!!!!
   if(current_map == 8){ //go back to map7
     if(p1.y==0){
       current_map = 7;
@@ -264,7 +272,7 @@ String display_4 = "";
 void message_3(){
   textSize(24);
   fill(255);
-  tutorial = true; //stops all movement (p1 and ghost)
+  pause = true; //stops all movement (p1 and ghost)
   text(display_3, 400,450);
   text(display_4, 400,490);
 
@@ -276,9 +284,9 @@ void message_3(){
   }
   counter_3+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
   
-  //determines when to turn off tutorial (after the messages play plus a little time)
+  //determines when to turn off pause (after the messages play plus a little time)
   if(counter_3>message_quad.length+message_thrice.length+12){
-    tutorial=false;
+    pause=false;
   }
 }
 
@@ -289,7 +297,7 @@ String[] message_quint = {"O", "M", "G"};
 void message_5(){
   textSize(24);
   fill(255);
-  tutorial = true; //stops all movement
+  pause = true; //stops all movement
   text(display_5, 400,250);
 
   if(counter_5%1==0 && counter_5<message_quint.length){
@@ -297,8 +305,8 @@ void message_5(){
   }
   counter_5+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
 
-  //determines when to turn off tutorial (after the message plays plus a little time)
+  //determines when to turn off pause (after the message plays plus a little time)
   if(counter_5>message_quint.length+12){ 
-    tutorial=false;
+    pause=false;
   }
 }
