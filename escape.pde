@@ -10,6 +10,9 @@ ArrayList<Ghost> ghosts;
 Player p1;
 final float final_speed = 5; //the player's speed - needs to be global
 
+//Keys
+ArrayList<Key> keyring;
+
 //movement variables
 boolean upPressed;
 boolean leftPressed;
@@ -18,8 +21,17 @@ boolean rightPressed;
 
 //sequence
 boolean intro = true;
-boolean tutorial = true;
-boolean game_start = true;
+boolean tutorial = false;
+boolean game_start = false;
+boolean pause = false;
+
+//Instructions
+String[] instructions = new String[5];
+int instruction_count = 0;
+
+//Images
+PImage keys; //ATTRIBUTION: <a href="https://www.flaticon.com/free-icons/key" title="key icons">Key icons created by Freepik - Flaticon</a>
+
 ///////////////////
 
 void setup(){
@@ -27,10 +39,24 @@ void setup(){
   textAlign(CENTER);
   noStroke();
 
+  //Keys
+  keys = loadImage("key.png");
+  keyring = new ArrayList<Key>();
+  keyring.add(new Key(720,720,1));
+  keyring.add(new Key(400,400,2));
+  keyring.add(new Key(400,600,2));
+
   //map initialization and declaration center
   Maps = new ArrayList<Barrier[]>();
   current_map = 0;
   map0(); map1(); map2(); map3(); map4(); map5(); map6(); map7(); map8(); //creates all the maps - go to the maps tab
+
+  //Instructions
+  instructions[0] = "Instructions will show up here";
+  instructions[1] = "After I make them";
+  instructions[2] = "Along with some visuals, hopefully";
+  instructions[3] = "OK let's get on with this game";
+  instructions[4] = "Good luck. And ESCAPE";
 
   //ghost initialization and declaration center
   ghosts = new ArrayList<Ghost>();
@@ -42,6 +68,7 @@ void draw(){
   if(keyPressed && key == 'q'){ //allows me to skip the intro sequence when testing, or else it just takes too long lol
     game_start = false;
     tutorial = false;
+    pause = false;
   }
   if(game_start){ //intro sequence
     game_start();
@@ -59,6 +86,15 @@ void draw(){
 
     for(Ghost g: ghosts){ //displays the ghosts
       g.display();
+    }
+
+    for(Key k: keyring){
+      if(!k.collected && current_map == k.map){ //if the key isn't collected and the player is in the correct map
+        k.display();
+      }
+      if(k.collision() && current_map == k.map){
+        k.collected = true;
+      }
     }
     
     //player movement logic - combined with void keyPressed and keyReleased
@@ -81,6 +117,10 @@ void draw(){
   if(intro){ //goes to start screen
     intro();
   }
+
+  if(!intro && tutorial){
+    tutorial();
+  }
 }
 
 //movement logic (to make movement continuous)
@@ -96,14 +136,6 @@ void keyReleased(){
   if (key=='a' || keyCode==LEFT) leftPressed = false;
   if (key=='s' || keyCode==DOWN) downPressed = false;
   if (key=='d' || keyCode==RIGHT) rightPressed = false;
-}
-
-void mousePressed(){
-  if(intro){  
-    intro = false;
-    game_start = true;
-    loop();
-  }
 }
 
 void intro(){ //start screen
@@ -122,6 +154,22 @@ void intro(){ //start screen
   fill(200);
   textSize(15);
   text("Click anywhere to start",400,700);
+}
+
+void tutorial(){
+  background(0);
+  textSize(24);
+
+  if(instruction_count<instructions.length){
+    text(instructions[instruction_count], 400,400); //shows the instructions - check mouseClicked for code
+  }
+
+  if(instruction_count==instructions.length){
+    text(instructions[instruction_count-1], 400,400); //shows the last instruction
+    frameCount = 0;   
+    tutorial = false; 
+    game_start = true;
+  }
 }
 
 void game_start(){
@@ -153,4 +201,15 @@ void game_over(){
   int time_sec = int(frameCount/60);
   textSize(35);
   text("Final time: " + time_min + " minutes " + time_sec + " seconds", 400,400);
+}
+
+void mouseClicked(){
+  if(tutorial && instruction_count<instructions.length){
+    instruction_count++;
+  }
+  if(intro){  
+    intro = false;
+    tutorial = true;
+    loop();
+  }
 }
