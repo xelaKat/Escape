@@ -10,6 +10,7 @@ class Key{ //UNFINISHED
         y = _y;
         map = m;
         collected = false;
+        used = false;
     }
 
     void display(){
