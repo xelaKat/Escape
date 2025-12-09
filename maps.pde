@@ -15,10 +15,11 @@ void map1(){ //testing for now - not the actual map
 }
 
 void map2(){
-    Barrier[] map2 = new Barrier[5];
-    for(int i = 0; i<map2.length; i++){
-        map2[i] = new Barrier();
-    }
+    Barrier[] map2 = new Barrier[4];
+    map2[0] = new Barrier(500,200,300,15);
+    map2[1] = new Barrier(200,230,300,15);
+    map2[2] = new Barrier(500,600,300,15);
+    map2[3] = new Barrier(200,570,300,15);
     Maps.add(map2);
 }
 
