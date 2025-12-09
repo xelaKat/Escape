@@ -11,7 +11,14 @@ Player p1;
 final float final_speed = 5; //the player's speed - needs to be global
 
 //Keys
-ArrayList<Key> keyring;
+ArrayList<Key> keyring; //arraylist of keys - arraylist because keys are deleted after they're used
+boolean lock2 = true; //the door to room 2 is locked
+boolean lock3 = true; //the door to room 3 is locked
+boolean lock4 = true; //the door to room 4 is locked
+boolean lock5 = true; //the door to room 5 is locked
+boolean lock6 = true; //the door to room 6 is locked
+boolean lock7 = true; //the door to room 7 is locked
+boolean lock8 = true; //the door to room 8 is locked
 
 //movement variables
 boolean upPressed;
@@ -23,7 +30,7 @@ boolean rightPressed;
 boolean intro = true;
 boolean tutorial = false;
 boolean game_start = false;
-boolean pause = false;
+boolean pause = false; //pause controls whether the player or ghost(s) can move
 
 //Instructions
 String[] instructions = new String[5];
@@ -45,6 +52,9 @@ void setup(){
   keyring.add(new Key(720,720,1));
   keyring.add(new Key(400,400,2));
   keyring.add(new Key(400,600,2));
+  
+  keyring.add(new Key(400,400,0));
+  keyring.add(new Key(400,400,0));
 
   //map initialization and declaration center
   Maps = new ArrayList<Barrier[]>();
@@ -210,6 +220,7 @@ void mouseClicked(){
   if(intro){  
     intro = false;
     tutorial = true;
+    pause = true;
     loop();
   }
 }
