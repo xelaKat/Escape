@@ -10,34 +10,55 @@ void sequence() {
       pause = false; //move after the messages are done playing
     }
 
-    if (p1.x==800 && p1.y>=700) { //go to map1
+    if (p1.x==800 && p1.y>=700) { //go to map1 - map1 is already unlocked
       current_map = 1;
       p1.x = 5;
+      p1.prevx = 5; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
       ghosts.add(new Ghost());
     }
 
-    if (p1.x>=700 && p1.y==0) { //go to map2
-      current_map = 2;
-      p1.y = 795;
-      //ghosts.add(new Ghost());
+    if(p1.x>=700 && p1.y==0) { //go to map2 - locked until a key is used
+      door2();
+      /*
+      checks if the door is locked - if so, display message
+      if you have no keys, display a message
+      if you do have a key, display a message. press k to open the door
+      */    
     }
 
-    if(p1.x==0 && p1.y<=100){ //go to map3
-      current_map = 3;
-      p1.x = 795;
+    if(p1.x==0 && p1.y<=100){ //go to map3 - locked until a key is used
+      door3();
+      /*
+      checks if the door is locked - if so, display message
+      if you have no keys, display a message
+      if you do have a key, display a message. press k to open the door
+      */
     }
 
     if(p1.x<=100 && p1.y==800){ //go to map4
-      current_map = 4;
-      p1.y = 5;
+      door4();
+      /*
+      checks if the door is locked - if so, display message
+      if you have no keys, display a message
+      if you do have a key, display a message. press k to open the door
+      */
       //ghosts.add(new Ghost());
     }
 
     //doorways
     fill(50, 230, 50); //green - unlocked
     rect(795, 700, 10, 100); //doorway to map1
+
+    fill(50, 230, 50); //green - unlocked
+    if(lock2){ fill(255,0,0); } //red - locked
     rect(700, -5, 100, 10); //doorway to map2
+
+    fill(50,230,50); //green - unlocked
+    if(lock3){ fill(255,0,0); } //red - locked
     rect(-5, 0, 10, 100); //doorway to map3
+
+    fill(50,230,50); //green - unlocked
+    if(lock4){ fill(255,0,0); } //red - locked
     rect(0, 795, 100, 10); //doorway to map4
   }
 
@@ -54,9 +75,7 @@ void sequence() {
     }
 
     if(p1.x==800 && p1.y<=100){ //go to map5
-      current_map = 5;
-      p1.x = 5;
-      ghosts.remove(0);
+      door5();
     }
 
     //room number
@@ -67,6 +86,8 @@ void sequence() {
     //doorways
     fill(50, 230, 50); //green - unlocked
     rect(-5, 700, 10, 100); //doorway to map0
+
+    if(lock5){ fill(255,0,0); } //red - locked
     rect(795, 0, 10, 100); //doorway to map5
   }
 
@@ -77,7 +98,7 @@ void sequence() {
     if (p1.x>=700 && p1.y==800){ //go back to map0
       current_map = 0;
       p1.y = 5;
-      //ghosts.remove(0);
+      ghosts.remove(0);
     }
 
     //room number
@@ -100,8 +121,7 @@ void sequence() {
     }
 
     if(p1.x==0 && p1.y>=700){ //go to map6
-      current_map = 6;
-      p1.x = 795;
+      door6();
     }
 
     //room number
@@ -112,6 +132,8 @@ void sequence() {
     //doorways
     fill(50, 230, 50); //green - unlocked
     rect(795, 0, 10, 100); //doorway to map0
+
+    if(lock6){ fill(255,0,0); } //red - locked
     rect(-5, 700, 10, 100); //doorway to map6
   }
 
@@ -126,9 +148,7 @@ void sequence() {
     }
 
     if(p1.x>=350 && p1.x<=450 && p1.y==800){ //go to map7
-      current_map = 7;
-      p1.y = 5;
-      ghosts.add(new Ghost(400,600,final_speed/2,100)); //big boss ghost
+      door7();
     }
 
     //room number
@@ -139,6 +159,8 @@ void sequence() {
     //doorways
     fill(50, 230, 50); //green - unlocked
     rect(0, -5, 100, 10); //doorway to map0
+
+    if(lock7){ fill(255,0,0); } //red - locked
     rect(350,795,100,10); //doorway to map7
   }
 
@@ -217,6 +239,7 @@ void sequence() {
     if(p1.y==0){
       current_map = 7;
       p1.y = 795;
+      p1.prevy = 795; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
       ghosts.add(new Ghost(400,600,final_speed/2,100)); //big boss ghost
     }
 
@@ -308,5 +331,208 @@ void message_5(){
   //determines when to turn off pause (after the message plays plus a little time)
   if(counter_5>message_quint.length+12){ 
     pause=false;
+  }
+}
+
+void door2(){
+  if(lock2){ //is the door locked?
+    int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
+    textSize(20);
+    text("locked door", 700,30);
+    for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
+      if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
+        text("press 'k' to use key", 700,50);
+
+        if(keyPressed && key == 'k'){ //unlocks the door
+          keyring.get(i).used = true;
+          keyring.remove(i);
+          lock2 = false;
+          i=-1; //turns off the for loop so only one key is used
+        }
+      }
+      else{ //if player doesn't have a key, tell the player they don't have a key
+        if(!keyring.get(i).collected){
+          key_count++;
+        }
+        if(key_count == keyring.size()){ //if all keys aren't collected
+          textSize(20);
+          text("you have no keys", 700,50); // :( sad
+        }
+      }
+    }
+  }
+  if(!lock2){ //if not locked, then you can enter!
+    current_map = 2;
+    p1.y = 795;
+    p1.prevy = 795; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
+    ghosts.add(new Ghost(100,100));
+  }
+}
+
+void door3(){
+  if(lock3){ //is the door locked?
+    int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
+    textSize(20);
+    text("locked door", 90,40);
+    for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
+      if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
+        text("press 'k' to use key", 90,60);
+
+        if(keyPressed && key == 'k'){ //unlocks the door
+          keyring.get(i).used = true;
+          keyring.remove(i);
+          lock3 = false;
+          i=-1; //turns off the for loop so only one key is used
+        }
+      }
+      else{ //if player doesn't have a key, tell the player they don't have a key
+        if(!keyring.get(i).collected){
+          key_count++;
+        }
+        if(key_count == keyring.size()){ //if all keys aren't collected
+          textSize(20);
+          text("you have no keys", 90,60); // :( sad
+        }
+      }
+    }
+  }
+  if(!lock3){ //if not locked, then you can enter!
+    current_map = 3;
+    p1.x = 795;
+  }
+}
+
+void door4(){
+  if(lock4){ //is the door locked?
+    int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
+    textSize(20);
+    text("locked door", 90,750);
+    for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
+      if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
+        text("press 'k' to use key", 90,770);
+
+        if(keyPressed && key == 'k'){ //unlocks the door
+          keyring.get(i).used = true;
+          keyring.remove(i);
+          lock4 = false;
+          i=-1; //turns off the for loop so only one key is used
+        }
+      }
+      else{ //if player doesn't have a key, tell the player they don't have a key
+        if(!keyring.get(i).collected){
+          key_count++;
+        }
+        if(key_count == keyring.size()){ //if all keys aren't collected
+          textSize(20);
+          text("you have no keys", 90,770); // :( sad
+        }
+      }
+    }
+  }
+  if(!lock4){ //if not locked, then you can enter!
+    current_map = 4;
+    p1.y = 5;
+  }
+}
+
+void door5(){
+  if(lock5){ //is the door locked?
+    int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
+    textSize(20);
+    text("locked door", 700,50);
+    for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
+      if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
+        text("press 'k' to use key", 700,70);
+
+        if(keyPressed && key == 'k'){ //unlocks the door
+          keyring.get(i).used = true;
+          keyring.remove(i);
+          lock5 = false;
+          i=-1; //turns off the for loop so only one key is used
+        }
+      }
+      else{ //if player doesn't have a key, tell the player they don't have a key
+        if(!keyring.get(i).collected){
+          key_count++;
+        }
+        if(key_count == keyring.size()){ //if all keys aren't collected
+          textSize(20);
+          text("you have no keys", 700,70); // :( sad
+        }
+      }
+    }
+  }
+  if(!lock5){ //if not locked, then you can enter!
+    current_map = 5;
+    p1.x = 5;
+    ghosts.remove(0);
+  }
+}
+
+void door6(){
+  if(lock6){ //is the door locked?
+    int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
+    textSize(20);
+    text("locked door", 90,740);
+    for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
+      if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
+        text("press 'k' to use key", 90,760);
+
+        if(keyPressed && key == 'k'){ //unlocks the door
+          keyring.get(i).used = true;
+          keyring.remove(i);
+          lock6 = false;
+          i=-1; //turns off the for loop so only one key is used
+        }
+      }
+      else{ //if player doesn't have a key, tell the player they don't have a key
+        if(!keyring.get(i).collected){
+          key_count++;
+        }
+        if(key_count == keyring.size()){ //if all keys aren't collected
+          textSize(20);
+          text("you have no keys", 90,760); // :( sad
+        }
+      }
+    }
+  }
+  if(!lock6){ //if not locked, then you can enter!
+    current_map = 6;
+    p1.x = 795;
+  }
+}
+
+void door7(){
+  if(lock7){ //is the door locked?
+    int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
+    textSize(20);
+    text("locked door", 400,740);
+    for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
+      if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
+        text("press 'k' to use key", 400,760);
+
+        if(keyPressed && key == 'k'){ //unlocks the door
+          keyring.get(i).used = true;
+          keyring.remove(i);
+          lock7 = false;
+          i=-1; //turns off the for loop so only one key is used
+        }
+      }
+      else{ //if player doesn't have a key, tell the player they don't have a key
+        if(!keyring.get(i).collected){
+          key_count++;
+        }
+        if(key_count == keyring.size()){ //if all keys aren't collected
+          textSize(20);
+          text("you have no keys", 400,760); // :( sad
+        }
+      }
+    }
+  }
+  if(!lock7){ //if not locked, then you can enter!
+    current_map = 7;
+    p1.y = 5;
+    p1.prevy = 5; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
+    ghosts.add(new Ghost(400,600,final_speed/2,100)); //big boss ghost
   }
 }
