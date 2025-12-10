@@ -24,9 +24,32 @@ void map2(){
 }
 
 void map3(){
-    Barrier[] map3 = new Barrier[2];
-    map3[0] = new Barrier(0,395,200,10);
-    map3[1] = new Barrier(600,395,200,10);
+    Barrier[] map3 = new Barrier[22];
+    //vertical walls
+    map3[0] = new Barrier(695,0,10,500);
+    map3[1] = new Barrier(595,150,10,200);
+    map3[2] = new Barrier(495,0,10,300);
+    map3[3] = new Barrier(195,100,10,600);
+    map3[4] = new Barrier(95,150,10,400);
+    map3[5] = new Barrier(95,700,10,100);
+    map3[6] = new Barrier(495,400,10,200);
+    map3[7] = new Barrier(495,700,10,100);
+    map3[18] = new Barrier(295,265,10,160);
+    map3[21] = new Barrier(310,540,10,100);
+
+    //horizontal
+    map3[8] = new Barrier(95,90,300,10);
+    map3[9] = new Barrier(295,190,200,10);
+    map3[10] = new Barrier(200,490,200,10);
+    map3[11] = new Barrier(400,590,400,10);
+    map3[12] = new Barrier(200,690,305,10);
+    map3[13] = new Barrier(600,690,305,10);
+    map3[14] = new Barrier(500,490,105,10);
+    map3[15] = new Barrier(0,190,100,10);
+    map3[16] = new Barrier(0,390,100,10);
+    map3[17] = new Barrier(0,610,100,10);
+    map3[19] = new Barrier(750,295,50,10);
+    map3[20] = new Barrier(695,500,50,10);
     Maps.add(map3);
 }
 
