@@ -50,8 +50,11 @@ void setup(){
   keys = loadImage("key.png");
   keyring = new ArrayList<Key>();
   keyring.add(new Key(720,720,1));
-  keyring.add(new Key(400,400,2));
-  keyring.add(new Key(400,600,2));
+  keyring.add(new Key(600,100,2));
+  keyring.add(new Key(600,400,2));
+  keyring.add(new Key(730,730,3));
+  keyring.add(new Key(400,400,5));
+  keyring.add(new Key(400,400,6));
   
   keyring.add(new Key(400,400,0));
   keyring.add(new Key(400,400,0));
@@ -209,6 +212,9 @@ void game_over(){
   //final time
   int time_min = int(frameCount/3600);
   int time_sec = int(frameCount/60);
+  if(frameCount>3600){
+    time_sec = int(frameCount/100/60);
+  }
   textSize(35);
   text("Final time: " + time_min + " minutes " + time_sec + " seconds", 400,400);
 }
