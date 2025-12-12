@@ -33,7 +33,7 @@ boolean game_start = false;
 boolean pause = false; //pause controls whether the player or ghost(s) can move
 
 //Instructions
-String[] instructions = new String[5];
+String[] instructions = new String[6];
 int instruction_count = 0;
 
 //Images
@@ -65,11 +65,12 @@ void setup(){
   map0(); map1(); map2(); map3(); map4(); map5(); map6(); map7(); map8(); //creates all the maps - go to the maps tab
 
   //Instructions
-  instructions[0] = "Instructions will show up here";
-  instructions[1] = "After I make them";
-  instructions[2] = "Along with some visuals, hopefully";
-  instructions[3] = "OK let's get on with this game";
-  instructions[4] = "Good luck. And ESCAPE";
+  instructions[0] = "Welcome, WANDERER.\nIt seems you have lost your way.";
+  instructions[1] = "This place is not happy with your presence.\nMany BARRIERS will block your way.";
+  instructions[2] = "Moreover, RED doorways will block your entry\nunless you have a KEY.";
+  instructions[3] = "KEYS are scattered throughout.\nAn unlocked doorway is GREEN.";
+  instructions[4] = "Be careful. GHOSTS haunt these rooms.\nThey will leave you be if you leave them be.";
+  instructions[5] = "Good luck, WANDERER.\nMay you find the exit, and ESCAPE...";
 
   //ghost initialization and declaration center
   ghosts = new ArrayList<Ghost>();
@@ -83,7 +84,10 @@ void draw(){
     tutorial = false;
     pause = false;
   }
-  if(game_start){ //intro sequence
+  if(tutorial){
+    tutorial();
+  }
+  else if(game_start){ //intro sequence
     game_start();
   }
   else{
@@ -170,29 +174,84 @@ void intro(){ //start screen
 }
 
 void tutorial(){
-  background(0);
-  textSize(24);
+  textSize(30);
 
-  if(instruction_count<instructions.length){
-    text(instructions[instruction_count], 400,400); //shows the instructions - check mouseClicked for code
+  if(frameCount<100){ //fading animation
+    fill(0,18);
+    rect(-5,-5,810,810);
   }
 
   if(instruction_count==instructions.length){
-    text(instructions[instruction_count-1], 400,400); //shows the last instruction
+    fill(255);
+    text(instructions[instruction_count-1], 400,390); //shows the last instruction
     frameCount = 0;   
     tutorial = false; 
     game_start = true;
+  }
+
+  //VISUALS to accompany the instructions
+  if(instruction_count==1){ //introduces barriers
+    fill(255);
+    rect(250,550,20,200); //example of barrier
+    rect(500,600,200,20); //example of barrier
+    rect(170,200,200,20); //example of barrier
+    rect(550,70,20,200); //example of barrier
+  }
+  else if(instruction_count==2){ //introduces doorways and keys
+    fill(255,0,0);
+    rect(250,250,100,5); //example of locked doorway
+    image(keys, 600,500); //example of key
+  }
+  else if(instruction_count==3){ //introduces unlocked doorways and more keys
+    fill(50, 230, 50);
+    rect(550,520,100,5); //example of unlocked doorway
+    image(keys, 220,220); //example of key
+  }
+  else if(instruction_count==4){ //introduces ghosts
+    //example of ghost: look at ghost code for more detail
+    fill(255,150);
+    circle(200,200,20*2);
+    fill(0,150);
+    circle(195,195,30*2); //repeated (bigger) circle to make sure the opacity shows up correctly
+    textSize(20*3/2);
+    fill(0);
+    text(">:)", 200,200+textWidth(">")/2);
+
+    //example of ghost
+    fill(255,150);
+    circle(600,600,20*2);
+    fill(0,150);
+    circle(595,595,30*2); //repeated circle to make sure the opacity shows up correctly
+    textSize(20*3/2);
+    fill(0);
+    text(">:)", 600,600+textWidth(">")/2);
+  }
+
+  if(frameCount>=120 && instruction_count<instructions.length){
+    fill(255);
+    text(instructions[instruction_count], 400,390); //shows the instructions - check mouseClicked for code
   }
 }
 
 void game_start(){
   if(frameCount>=120 && frameCount<=180){
-    fill(255);
     textSize(24);
+
+    //thought bubble
+    fill(255,15); //opacity 35
+    stroke(180); //a dim white
+    rect(400-textWidth("   Hello?")/2,372,textWidth(display_1 + "Hello?   "),40,25);
+    //a second rect prevents the original rect from getting too white and covering the text, since there is no background(0) that resets the opacity display
+    fill(0,55);
+    rect(400-textWidth("   Hello?")/2,372,textWidth(display_1 + "Hello?   "),40,25);
+    noStroke();
+
+    //display message
+    fill(255);
     text("Hello?",400,400);
   }
   else if(frameCount<120 || frameCount>=180){
-    fill(0,18);
+    fill(0,30);
     rect(-5,-5,810,810);
   }
   if(frameCount==300){
@@ -220,7 +279,8 @@ void game_over(){
 }
 
 void mouseClicked(){
-  if(tutorial && instruction_count<instructions.length){
+  if(tutorial && frameCount>=120 && instruction_count<instructions.length){
+    background(0);
     instruction_count++;
   }
   if(intro){  
