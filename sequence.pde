@@ -1,23 +1,23 @@
 void sequence() {
-  if (current_map == 0) {
-    if (!tutorial && frameCount>=60 && frameCount<150) {
+  if(current_map == 0){
+    if(!tutorial && frameCount>=60 && frameCount<150){
       message_1();
     }
-    if (!tutorial && frameCount>=150) {
+    if(!tutorial && frameCount>=150){
       message_2();
     }
     if(frameCount>=300){
       pause = false; //move after the messages are done playing
     }
 
-    if (p1.x==800 && p1.y>=700) { //go to map1 - map1 is already unlocked
+    if(p1.x==800 && p1.y>=700){ //go to map1 - map1 is already unlocked
       current_map = 1;
       p1.x = 5;
       p1.prevx = 5; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
       ghosts.add(new Ghost());
     }
 
-    if(p1.x>=700 && p1.y==0) { //go to map2 - locked until a key is used
+    if(p1.x>=700 && p1.y==0){ //go to map2 - locked until a key is used
       door2();
       /*
       checks if the door is locked - if so, display message
@@ -65,10 +65,10 @@ void sequence() {
 
   //// MAP1 ////
   //Stats: ONE ghost, ONE key
-  if(current_map == 1) {
+  if(current_map == 1){
     message_3();
 
-    if (p1.x==0 && p1.y>=700){ //go back to map0
+    if(p1.x==0 && p1.y>=700){ //go back to map0
       current_map = 0;
       p1.x = 795;
       ghosts.remove(0);
@@ -263,6 +263,14 @@ String display_1 = "";
 
 void message_1(){
   textSize(24);
+  
+  //thought bubble
+  stroke(180); //a dim white
+  fill(255,35); //opacity 35
+  rect(400-textWidth("   " + display_1)/2,302,textWidth(display_1 + "   "),40,25);
+  noStroke();
+
+  //display message
   fill(255);
   text(display_1, 400,330);
 
@@ -277,6 +285,14 @@ String[] message_again = {"I", " ", "h", "a", "v", "e", " ", "t", "o", " ", "g",
 String display_2 = "";
 void message_2(){
   textSize(24);
+
+  //thought bubble
+  stroke(180); //a dim white
+  fill(255,35); //opacity 35
+  rect(400-textWidth("   " + display_2)/2,302,textWidth(display_2 + "   "),40,25);
+  noStroke();
+
+  ///display message
   fill(255);
   text(display_2, 400,330);
 
@@ -293,11 +309,22 @@ String display_3 = "";
 String[] message_quad = {"L", "o", "o", "k", "s", " ", "a", " ", "l", "i", "t", "t", "l", "e", " ", "a", "n", "g", "r", "y", ".", ".", "."};
 String display_4 = "";
 void message_3(){
-  textSize(24);
-  fill(255);
   pause = true; //stops all movement (p1 and ghost)
-  text(display_3, 400,450);
-  text(display_4, 400,490);
+  textSize(24);
+
+  //thought bubble
+  stroke(180); //a dim white
+  fill(255,35); //opacity 35
+  rect(200-textWidth("   " + display_3)/2,572,textWidth(display_3 + "   "),40,25);
+  if(display_4.length()>0){
+    rect(200-textWidth("   " + display_4)/2,612,textWidth(display_4 + "   "),40,25);
+  }
+  noStroke();
+
+  ///display message
+  fill(255);
+  text(display_3, 200,600);
+  text(display_4, 200,640);
 
   if(counter_3%1==0 && counter_3<message_thrice.length){
     display_3 += message_thrice[int(counter_3)];
@@ -318,10 +345,18 @@ float counter_5 = 0;
 String display_5 = "";
 String[] message_quint = {"O", "M", "G"};
 void message_5(){
-  textSize(24);
-  fill(255);
   pause = true; //stops all movement
-  text(display_5, 400,250);
+  textSize(24);
+
+  //thought bubble
+  stroke(180); //a dim white
+  fill(255,35); //opacity 35
+  rect(400-textWidth("   " + display_5)/2,272,textWidth(display_5 + "   "),40,25);
+  noStroke();
+
+  ///display message
+  fill(255);
+  text(display_5, 400,300);
 
   if(counter_5%1==0 && counter_5<message_quint.length){
     display_5 += message_quint[int(counter_5)];
