@@ -139,12 +139,14 @@ void sequence() {
 
 
   //// MAP4 ////
-  //Stats: ?? ghost, ZERO key
+  //Stats: 3 ghost, ZERO key
   if(current_map == 4){
     if(p1.x <= 100 && p1.y==0){ //go back to map0
       current_map = 0;
       p1.y = 795;
-      //ghosts.remove(0);
+      ghosts.remove(2);
+      ghosts.remove(1);
+      ghosts.remove(0);
     }
 
     if(p1.x>=350 && p1.x<=450 && p1.y==800){ //go to map7
@@ -213,6 +215,9 @@ void sequence() {
       current_map = 4;
       p1.y = 795;
       ghosts.remove(0);
+      ghosts.add(new Ghost(75,775,3,20));
+      ghosts.add(new Ghost(775,75,3,20));
+      ghosts.add(new Ghost(775,775,3,20));
     }
 
     if(p1.y==800){ //go to map8
@@ -240,7 +245,7 @@ void sequence() {
       current_map = 7;
       p1.y = 795;
       p1.prevy = 795; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
-      ghosts.add(new Ghost(400,600,final_speed/2,100)); //big boss ghost
+      ghosts.add(new Ghost(400,600,3,100)); //big boss ghost
     }
 
     //room number
@@ -467,6 +472,10 @@ void door4(){
   if(!lock4){ //if not locked, then you can enter!
     current_map = 4;
     p1.y = 5;
+    p1.prevy = 5; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
+    ghosts.add(new Ghost(75,775,3,20));
+    ghosts.add(new Ghost(775,75,3,20));
+    ghosts.add(new Ghost(775,775,3,20));
   }
 }
 
@@ -541,6 +550,7 @@ void door7(){
   if(lock7){ //is the door locked?
     int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
     textSize(20);
+    fill(255);
     text("locked door", 400,740);
     for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
       if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
@@ -568,6 +578,9 @@ void door7(){
     current_map = 7;
     p1.y = 5;
     p1.prevy = 5; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
-    ghosts.add(new Ghost(400,600,final_speed/2,100)); //big boss ghost
+    ghosts.remove(2); //deletes prev ghosts
+    ghosts.remove(1); //deletes prev ghosts
+    ghosts.remove(0); //deletes prev ghosts
+    ghosts.add(new Ghost(400,600,3,100)); //big boss ghost
   }
 }
