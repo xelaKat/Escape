@@ -65,7 +65,6 @@ class Ghost{
 
     void collision(){
         if (dist(p1.x, p1.y, x, y) <= p1.size + size) {
-            game_over();
+            game_over = true;
         }
     }
-}
