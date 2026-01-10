@@ -30,6 +30,7 @@ boolean rightPressed;
 boolean intro = true;
 boolean tutorial = false;
 boolean game_start = false;
+boolean game_over = false;
 boolean pause = false; //pause controls whether the player or ghost(s) can move
 
 //Instructions
@@ -49,12 +50,12 @@ void setup(){
   //Keys
   keys = loadImage("key.png");
   keyring = new ArrayList<Key>();
-  keyring.add(new Key(720,720,1));
-  keyring.add(new Key(600,100,2));
-  keyring.add(new Key(600,400,2));
-  keyring.add(new Key(730,730,3));
-  keyring.add(new Key(400,400,5));
-  keyring.add(new Key(400,400,6));
+  keyring.add(new Key(720,720,1)); //map1
+  keyring.add(new Key(600,100,2)); //map2
+  keyring.add(new Key(600,400,2)); //map2
+  keyring.add(new Key(730,730,3)); //map3
+  keyring.add(new Key(400,400,5)); //map5
+  keyring.add(new Key(60,60,6)); //map6
   
   keyring.add(new Key(400,400,0));
   keyring.add(new Key(400,400,0));
@@ -89,6 +90,9 @@ void draw(){
   }
   else if(game_start){ //intro sequence
     game_start();
+  }
+  else if(game_over){
+    game_over();
   }
   else{
     background(0);
@@ -231,6 +235,12 @@ void tutorial(){
     fill(255);
     text(instructions[instruction_count], 400,390); //shows the instructions - check mouseClicked for code
   }
+  
+  fill(200);
+  textSize(15);
+  if(frameCount>=120){
+    text("Click anywhere to continue",400,700);
+  }
 }
 
 void game_start(){
@@ -238,7 +248,7 @@ void game_start(){
     textSize(24);
 
     //thought bubble
-    fill(255,15); //opacity 35
+    fill(255,15); //opacity 15
     stroke(180); //a dim white
     rect(400-textWidth("   Hello?")/2,372,textWidth(display_1 + "Hello?   "),40,25);
     //a second rect prevents the original rect from getting too white and covering the text, since there is no background(0) that resets the opacity display
@@ -270,10 +280,8 @@ void game_over(){
 
   //final time
   int time_min = int(frameCount/3600);
-  int time_sec = int(frameCount/60);
-  if(frameCount>3600){
-    time_sec = int(frameCount/100/60);
-  }
+  int time_sec = int(frameCount%60);
+  
   textSize(35);
   text("Final time: " + time_min + " minutes " + time_sec + " seconds", 400,400);
 }
@@ -287,6 +295,18 @@ void mouseClicked(){
     intro = false;
     tutorial = true;
     pause = true;
+    loop();
+  }
+
+  if(game_over){ //resets the time - FIX
+    game_over = false;
+    current_map = 0;
+    for(int i = ghosts.size()-1; i>-1; i--){
+      ghosts.remove(i);
+    }
+    p1.x = 400;
+    p1.y = 400;
+    pause = false;
     loop();
   }
 }
