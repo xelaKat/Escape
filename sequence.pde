@@ -42,7 +42,6 @@ void sequence() {
       if you have no keys, display a message
       if you do have a key, display a message. press k to open the door
       */
-      //ghosts.add(new Ghost());
     }
 
     //doorways
@@ -188,12 +187,36 @@ void sequence() {
 
 
   //// MAP6 ////
-  //Stats: ?? ghost, ONE key
+  //Stats: 3 ghost, ONE key
   if(current_map == 6){
+
     if(p1.x==800 && p1.y>=700){ //go to map3
       current_map = 3;
       p1.x = 5;
+      if(ghosts.size()>0){
+        ghosts.remove(2);
+        ghosts.remove(1);
+        ghosts.remove(0);
+      }
     }
+
+    if(p1.x<160 && p1.y<160 && ghosts.size()<3){
+      ghosts.add(new Ghost(600,200,2,20));
+      ghosts.add(new Ghost(200,600,2,20));
+      ghosts.add(new Ghost(600,600,2,20));
+    }
+    else if(ghosts.size()>0){
+      message_6();
+    }
+
+    //ghost line - crossing this line wakes up dormant ghosts
+    strokeWeight(5);
+    stroke(180);
+    line(160,0,160,160);
+    line(0,160,160,160);
+    strokeWeight(1);
+    noStroke();
+
 
     //room number
     textSize(50);
@@ -374,6 +397,37 @@ void message_5(){
   }
 }
 
+//// Message that play on map6
+float counter_6 = 0;
+String display_6 = "";
+String[] message_hex = {"S", "e", "v", "e", "r", "a", "l", " ", "d", "o", "r", "m", "a", "n", "t", " ", "G", "h", "o", "s", "t", "s", " ", "w", "a", "k", "e", " ", "a", "t", " ", "y", "o", "u", "r", " ", "i", "n", "t", "r", "u", "s", "i", "o", "n"};
+void message_6(){
+  pause = true; //stops all movement
+  textSize(24);
+
+  //dialouge bubble
+  stroke(100); // gray
+  fill(255,70); //opacity 70
+  rect(400-textWidth("   " + display_6)/2,272,textWidth(display_6 + "   "),40,10);
+  noStroke();
+
+  //display message
+  fill(255);
+  text(display_6, 400,300);
+
+  if(counter_6%1==0 && counter_6<message_hex.length){
+    display_6 += message_hex[int(counter_6)];
+  }
+  counter_6+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+
+  //determines when to turn off pause (after the message plays plus a little time)
+  if(counter_6>message_hex.length+12){ 
+    pause=false;
+  }
+}
+
+
+//// DOORS ////
 void door2(){
   if(lock2){ //is the door locked?
     int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
