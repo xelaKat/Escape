@@ -119,14 +119,13 @@ void map5(){
 }
 
 void map6(){
-    Barrier[] map6 = new Barrier[5];
-    map6[0] = new Barrier();
+    Barrier[] map6 = new Barrier[4];
 
     //walls
-    map6[1] = new Barrier(0,-5,800,5);
-    map6[2] = new Barrier(800,0,5,700);
-    map6[3] = new Barrier(0,800,800,5);
-    map6[4] = new Barrier(-5,0,5,800);
+    map6[0] = new Barrier(0,-5,800,5);
+    map6[1] = new Barrier(800,0,5,700);
+    map6[2] = new Barrier(0,800,800,5);
+    map6[3] = new Barrier(-5,0,5,800);
     Maps.add(map6);
 }
 
