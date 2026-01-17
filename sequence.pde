@@ -57,7 +57,7 @@ void sequence() {
     rect(-5, 0, 10, 100); //doorway to map3
 
     fill(50,230,50); //green - unlocked
-    if(lock4){ fill(255,0,0); } //red - locked
+    if(lock4){ fill(250,0,250); } //purple - special door - locked
     rect(0, 795, 100, 10); //doorway to map4
   }
 
@@ -167,12 +167,20 @@ void sequence() {
 
 
   //// MAP5 ////
-  //Stats: ?? ghost, ONE key
+  //Stats: 0 ghost, SPECIAL key
   if(current_map == 5){
     if(p1.x==0 && p1.y<=100){ //go to map1
       current_map = 1;
       p1.x = 795;
       ghosts.add(new Ghost());
+    }
+
+    //interactive guy
+    fill(250,250,0,150); //yellow opacity: 150
+    circle(400,700,40);
+    if(dist(400,700,p1.x,p1.y)<=100){
+      circle(400,700,40); //makes the circle more visible
+      message_7();
     }
 
     //room number
@@ -426,6 +434,167 @@ void message_6(){
   }
 }
 
+//// Messages that play on map5
+float counter_7 = 0;
+String display_7 = "";
+String[] message_a = {"!", "!", "!"};
+void message_7(){
+  pause = true; //stops all movement
+  textSize(24);
+
+  //dialouge bubble
+  stroke(100); // gray
+  fill(255,20); //opacity 20
+  rect(400-textWidth("   " + display_7)/2,622,textWidth(display_7 + "   "),40);
+  noStroke();
+
+  //display message
+  fill(230);
+  text(display_7, 400,650);
+
+  if(counter_7%1==0 && counter_7<message_a.length){
+    display_7 += message_a[int(counter_7)];
+  }
+  counter_7+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+
+  //determines when to turn off pause (after the message plays plus a little time)
+  if(counter_7>message_a.length+12){ 
+    message_8();
+  }
+}
+float counter_8 = 0;
+String display_8 = "";
+String[] message_b = {"A", " ", "W", "a", "n", "d", "e", "r", "e", "r", "?", " ", "H", "o", "w", " ", "d", "i", "d", " ", "y", "o", "u", " ", "g", "e", "t", " ", "h", "e", "r", "e", "?"};
+void message_8(){
+  fill(0);
+  rect(0,620,800,670);
+  fill(250,250,0,180); //yellow opacity: 180
+  circle(400,700,40);
+  
+  pause = true; //stops all movement
+  textSize(24);
+
+  //dialouge bubble
+  stroke(100); // gray
+  fill(255,20); //opacity 20
+  rect(400-textWidth("   " + display_8)/2,622,textWidth(display_8 + "   "),40);
+  noStroke();
+
+  //display message
+  fill(230);
+  text(display_8, 400,650);
+
+  if(counter_8%1==0 && counter_8<message_b.length){
+    display_8 += message_b[int(counter_8)];
+  }
+  counter_8+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+
+  //determines when to turn off pause (after the message plays plus a little time)
+  if(counter_8>message_b.length+12){ 
+    pause=false;
+    message_9();
+  }
+}
+float counter_9 = 0;
+String display_9 = "";
+String[] message_c = {"N", "o", " ", "m", "a", "t", "t", "e", "r", ".", " ", "Y", "o", "u", " ", "m", "u", "s", "t", " ", "e", "s", "c", "a", "p", "e", " ", "l", "e", "s", "t", " ", "t", "h", "e", " ", "g", "h", "o", "s", "t", "s", " ", "d", "e", "v", "o", "u", "r", " ", "y", "o", "u", "!"};
+void message_9(){
+  fill(0);
+  rect(0,620,800,670);
+  fill(250,250,0,180); //yellow opacity: 180
+  circle(400,700,40);
+
+  pause = true; //stops all movement
+  textSize(24);
+
+  //dialouge bubble
+  stroke(100); // gray
+  fill(255,20); //opacity 20
+  rect(400-textWidth("   " + display_9)/2,622,textWidth(display_9 + "   "),40);
+  noStroke();
+
+  //display message
+  fill(230);
+  text(display_9, 400,650);
+
+  if(counter_9%1==0 && counter_9<message_c.length){
+    display_9 += message_c[int(counter_9)];
+  }
+  counter_9+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+
+  //determines when to turn off pause (after the message plays plus a little time)
+  if(counter_9>message_c.length+12){ 
+    pause=false;
+    message_10();
+  }
+}
+float counter_10 = 0;
+String display_10 = "";
+String[] message_d = {"I", " ", "h", "a", "v", "e", " ", "a", " ", "s", "p", "e", "c", "i", "a", "l", " ", "k", "e", "y", " ", "n", "e", "e", "d", "e", "d", " ", "t", "o", " ", "f", "i", "n", "d", " ", "t", "h", "e", " ", "e", "s", "c", "a", "p", "e", "."};
+void message_10(){
+  fill(0);
+  rect(0,620,800,670);
+  fill(250,250,0,180); //yellow opacity: 180
+  circle(400,700,40);
+
+  pause = true; //stops all movement
+  textSize(24);
+
+  //dialouge bubble
+  stroke(100); // gray
+  fill(255,20); //opacity 20
+  rect(400-textWidth("   " + display_10)/2,622,textWidth(display_10 + "   "),40);
+  noStroke();
+
+  //display message
+  fill(230);
+  text(display_10, 400,650);
+
+  if(counter_10%1==0 && counter_10<message_d.length){
+    display_10 += message_d[int(counter_10)];
+  }
+  counter_10+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+
+  //determines when to turn off pause (after the message plays plus a little time)
+  if(counter_10>message_d.length+12){ 
+    pause=false;
+    message_11();
+  }
+}
+float counter_11 = 0;
+String display_11 = "";
+String[] message_e = {"C", "o", "m", "e", " ", "b", "a", "c", "k", " ", "a", "f", "t", "e", "r", " ", "y", "o", "u", " ", "h", "a", "v", "e", " ", "c", "o", "l", "l", "e", "c", "t", "e", "d", " ", "a", "l", "l", " ", "o", "t", "h", "e", "r", " ", "k", "e", "y", "s", "."};
+void message_11(){
+  fill(0);
+  rect(0,620,800,670);
+  fill(250,250,0,180); //yellow opacity: 180
+  circle(400,700,40);
+
+  pause = true; //stops all movement
+  textSize(24);
+
+  //dialouge bubble
+  stroke(100); // gray
+  fill(255,20); //opacity 20
+  rect(400-textWidth("   " + display_11)/2,622,textWidth(display_11 + "   "),40);
+  noStroke();
+
+  //display message
+  fill(230);
+  text(display_11, 400,650);
+
+  if(counter_11%1==0 && counter_11<message_e.length){
+    display_11 += message_e[int(counter_11)];
+  }
+  counter_11+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+
+  //determines when to turn off pause (after the message plays plus a little time)
+  if(counter_11>message_e.length+12){ 
+    pause=false;
+  }
+}
+
+
 
 //// DOORS ////
 void door2(){
@@ -500,10 +669,9 @@ void door4(){
   if(lock4){ //is the door locked?
     int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
     textSize(20);
-    text("locked door", 90,750);
     for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
       if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
-        text("press 'k' to use key", 90,770);
+        text("press 'k' to use special key", 115,770);
 
         if(keyPressed && key == 'k'){ //unlocks the door
           keyring.get(i).used = true;
@@ -518,7 +686,7 @@ void door4(){
         }
         if(key_count == keyring.size()){ //if all keys aren't collected
           textSize(20);
-          text("you have no keys", 90,770); // :( sad
+          text("special key required", 95,770); // :( sad
         }
       }
     }
@@ -605,10 +773,10 @@ void door7(){
     int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
     textSize(20);
     fill(255);
-    text("locked door", 400,740);
+    text("locked door", 400,750);
     for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
       if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
-        text("press 'k' to use key", 400,760);
+        text("press 'k' to use key", 400,770);
 
         if(keyPressed && key == 'k'){ //unlocks the door
           keyring.get(i).used = true;
@@ -623,7 +791,7 @@ void door7(){
         }
         if(key_count == keyring.size()){ //if all keys aren't collected
           textSize(20);
-          text("you have no keys", 400,760); // :( sad
+          text("you have no keys", 400,770); // :( sad
         }
       }
     }
