@@ -50,16 +50,15 @@ void setup(){
   //Keys
   keys = loadImage("key.png");
   keyring = new ArrayList<Key>();
-  keyring.add(new Key(720,720,1)); //map1
-  keyring.add(new Key(600,100,2)); //map2
-  keyring.add(new Key(600,400,2)); //map2
-  keyring.add(new Key(730,730,3)); //map3
-  keyring.add(new Key(400,400,5)); //map5
-  keyring.add(new Key(60,60,6)); //map6
-  
-  keyring.add(new Key(400,400,0));
-  keyring.add(new Key(400,400,0));
+  keyring.add(new Key(720,720,1,false)); //map1
+  keyring.add(new Key(600,100,2,false)); //map2
+  keyring.add(new Key(600,400,2,false)); //map2
+  keyring.add(new Key(730,730,3,false)); //map3
+  keyring.add(new Key(350,350,5,false)); //map5
+  keyring.add(new Key(60,60,6,false)); //map6
 
+  keyring.add(new Key(400,400,0,true)); //tester special key
+  
   //map initialization and declaration center
   Maps = new ArrayList<Barrier[]>();
   current_map = 0;
