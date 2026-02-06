@@ -4,11 +4,13 @@ class Key{ //UNFINISHED
     boolean collected;
     boolean used;
     int map; //determines which map the key shows up in
+    boolean special; //is it a special key? only used for room 4
 
-    Key(float _x, float _y, int m){
+    Key(float _x, float _y, int m, boolean s){
         x = _x;
         y = _y;
         map = m;
+        special = s;
         collected = false;
         used = false;
     }
