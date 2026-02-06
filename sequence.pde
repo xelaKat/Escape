@@ -56,8 +56,7 @@ void sequence() {
     if(lock3){ fill(255,0,0); } //red - locked
     rect(-5, 0, 10, 100); //doorway to map3
 
-    fill(50,230,50); //green - unlocked
-    if(lock4){ fill(250,0,250); } //purple - special door - locked
+    fill(250,0,250); //purple - special door - locked
     rect(0, 795, 100, 10); //doorway to map4
   }
 
@@ -140,14 +139,12 @@ void sequence() {
   //// MAP4 ////
   //Stats: 3 ghost, ZERO key
   if(current_map == 4){
-    if(p1.x <= 100 && p1.y==0){ //go back to map0
-      current_map = 0;
-      p1.y = 795;
-      ghosts.remove(2);
-      ghosts.remove(1);
-      ghosts.remove(0);
+    //CAN'T RETURN TO MAP0!!!
+    if(p1.x<=100 && p1.y==0){
+      fill(255);
+      textSize(20);
+      text("locked", 50,30);
     }
-
     if(p1.x>=350 && p1.x<=450 && p1.y==800){ //go to map7
       door7();
     }
@@ -158,7 +155,7 @@ void sequence() {
     text("4", 400, 400); 
 
     //doorways
-    fill(50, 230, 50); //green - unlocked
+    fill(250,0,250); //purple - special door - locked
     rect(0, -5, 100, 10); //doorway to map0
 
     if(lock7){ fill(255,0,0); } //red - locked
@@ -176,9 +173,14 @@ void sequence() {
     }
 
     //interactive guy
-    fill(250,250,0,150); //yellow opacity: 150
+    fill(250,250,0,200); //yellow opacity: 150
     circle(400,700,40);
-    if(dist(400,700,p1.x,p1.y)<=100){
+    if(dist(400,700,p1.x,p1.y)<=110 && keyring.get(0).collected && keyring.get(1).collected && keyring.get(2).collected && keyring.get(3).collected && keyring.get(4).collected && keyring.get(5).collected){
+      circle(400,700,40); //makes the circle more visible
+      message_13();
+      keyring.add(new Key(400,100,5,true)); //special key
+    }
+    else if(dist(400,700,p1.x,p1.y)<=110){
       circle(400,700,40); //makes the circle more visible
       message_7();
     }
@@ -497,7 +499,7 @@ void message_8(){
 }
 float counter_9 = 0;
 String display_9 = "";
-String[] message_c = {"N", "o", " ", "m", "a", "t", "t", "e", "r", ".", " ", "Y", "o", "u", " ", "m", "u", "s", "t", " ", "e", "s", "c", "a", "p", "e", " ", "l", "e", "s", "t", " ", "t", "h", "e", " ", "g", "h", "o", "s", "t", "s", " ", "d", "e", "v", "o", "u", "r", " ", "y", "o", "u", "!"};
+String[] message_c = {"N", "o", " ", "m", "a", "t", "t", "e", "r", ".", " ", "Y", "o", "u", " ", "m", "u", "s", "t", " ", "e", "s", "c", "a", "p", "e", " ", "t", "h", "i", "s", " ", "p", "l", "a", "c", "e", "!"};
 void message_9(){
   fill(0);
   rect(0,620,800,670);
@@ -530,7 +532,7 @@ void message_9(){
 }
 float counter_10 = 0;
 String display_10 = "";
-String[] message_d = {"I", " ", "h", "a", "v", "e", " ", "a", " ", "s", "p", "e", "c", "i", "a", "l", " ", "k", "e", "y", " ", "n", "e", "e", "d", "e", "d", " ", "t", "o", " ", "f", "i", "n", "d", " ", "t", "h", "e", " ", "e", "s", "c", "a", "p", "e", "."};
+String[] message_d = {"I", " ", "h", "a", "v", "e", " ", "a", " ", "s", "p", "e", "c", "i", "a", "l", " ", "k", "e", "y", " ", "n", "e", "e", "d", "e", "d", " ", "t", "o", " ", "r", "e", "a", "c", "h", " ", "t", "h", "e", " ", "e", "x", "i", "t", ","};
 void message_10(){
   fill(0);
   rect(0,620,800,670);
@@ -561,9 +563,10 @@ void message_10(){
     message_11();
   }
 }
+
 float counter_11 = 0;
 String display_11 = "";
-String[] message_e = {"C", "o", "m", "e", " ", "b", "a", "c", "k", " ", "a", "f", "t", "e", "r", " ", "y", "o", "u", " ", "h", "a", "v", "e", " ", "c", "o", "l", "l", "e", "c", "t", "e", "d", " ", "a", "l", "l", " ", "o", "t", "h", "e", "r", " ", "k", "e", "y", "s", "."};
+String[] message_e = {"b", "u", "t", " ", "u", "s", "i", "n", "g", " ", "i", "t", " ", "m", "e", "a", "n", "s", " ", "y", "o", "u", " ", "o", "n", "l", "y", " ", "h", "a", "v", "e", " ", "o", "n", "e", " ", "s", "h", "o", "t", " ", "t", "o", " ", "e", "s", "c", "a", "p", "e"};
 void message_11(){
   fill(0);
   rect(0,620,800,670);
@@ -591,9 +594,75 @@ void message_11(){
   //determines when to turn off pause (after the message plays plus a little time)
   if(counter_11>message_e.length+12){ 
     pause=false;
+    message_12();
   }
 }
 
+float counter_12 = 0;
+String display_12 = "";
+String[] message_f = {"I", "f", " ", "y", "o", "u", " ", "a", "r", "e", " ", "s", "e", "r", "i", "o", "u", "s", ",", " ", "c", "o", "m", "e", " ", "b", "a", "c", "k", " ", "a", "f", "t", "e", "r", " ", "y", "o", "u", " ", "h", "a", "v", "e", " ", "c", "o", "l", "l", "e", "c", "t", "e", "d", " ", "a", "l", "l", " ", "o", "t", "h", "e", "r", " ", "k", "e", "y", "s", "."};
+void message_12(){
+  fill(0);
+  rect(0,620,800,670);
+  fill(250,250,0,180); //yellow opacity: 180
+  circle(400,700,40);
+
+  pause = true; //stops all movement
+  textSize(24);
+
+  //dialouge bubble
+  stroke(100); // gray
+  fill(255,20); //opacity 20
+  rect(400-textWidth("   " + display_12)/2,622,textWidth(display_12 + "   "),40);
+  noStroke();
+
+  //display message
+  fill(230);
+  text(display_12, 400,650);
+
+  if(counter_12%1==0 && counter_12<message_f.length){
+    display_12 += message_f[int(counter_12)];
+  }
+  counter_12+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+
+  //determines when to turn off pause (after the message plays plus a little time)
+  if(counter_12>message_f.length+12){ 
+    pause=false;
+  }
+}
+
+float counter_13 = 0;
+String display_13 = "";
+String[] message_g = {"G", "o", "o", "d", " ", "l", "u", "c", "k", "."};
+void message_13(){
+  fill(0);
+  rect(0,620,800,670);
+  fill(250,250,0,180); //yellow opacity: 180
+  circle(400,700,40);
+
+  pause = true; //stops all movement
+  textSize(24);
+
+  //dialouge bubble
+  stroke(100); // gray
+  fill(255,20); //opacity 20
+  rect(400-textWidth("   " + display_13)/2,622,textWidth(display_13 + "   "),40);
+  noStroke();
+
+  //display message
+  fill(230);
+  text(display_13, 400,650);
+
+  if(counter_13%1==0 && counter_13<message_g.length){
+    display_13 += message_g[int(counter_13)];
+  }
+  counter_13+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+
+  //determines when to turn off pause (after the message plays plus a little time)
+  if(counter_13>message_g.length+12){ 
+    pause=false;
+  }
+}
 
 
 //// DOORS ////
@@ -608,7 +677,6 @@ void door2(){
 
         if(keyPressed && key == 'k'){ //unlocks the door
           keyring.get(i).used = true;
-          keyring.remove(i);
           lock2 = false;
           i=-1; //turns off the for loop so only one key is used
         }
@@ -643,7 +711,6 @@ void door3(){
 
         if(keyPressed && key == 'k'){ //unlocks the door
           keyring.get(i).used = true;
-          keyring.remove(i);
           lock3 = false;
           i=-1; //turns off the for loop so only one key is used
         }
@@ -669,27 +736,17 @@ void door4(){
   if(lock4){ //is the door locked?
     int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
     textSize(20);
-    for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
-      if(keyring.get(i).collected && !keyring.get(i).used){ //if player has a key that isn't used,
-        text("press 'k' to use special key", 115,770);
+    if(keyring.size() == 7 && keyring.get(6).collected){ //if player has a key that isn't used,
+      text("press 'k' to use special key", 115,770);
 
-        if(keyPressed && key == 'k'){ //unlocks the door
-          keyring.get(i).used = true;
-          keyring.remove(i);
-          lock4 = false;
-          i=-1; //turns off the for loop so only one key is used
-        }
-      }
-      else{ //if player doesn't have a key, tell the player they don't have a key
-        if(!keyring.get(i).collected){
-          key_count++;
-        }
-        if(key_count == keyring.size()){ //if all keys aren't collected
-          textSize(20);
-          text("special key required", 95,770); // :( sad
-        }
+      if(keyPressed && key == 'k'){ //unlocks the door
+        keyring.get(5).used = true;
+        lock4 = false;
       }
     }
+    else{ //if player doesn't have a key, tell the player they don't have a key
+        text("special key required", 95,770); // :( sad
+      }
   }
   if(!lock4){ //if not locked, then you can enter!
     current_map = 4;
@@ -712,7 +769,6 @@ void door5(){
 
         if(keyPressed && key == 'k'){ //unlocks the door
           keyring.get(i).used = true;
-          keyring.remove(i);
           lock5 = false;
           i=-1; //turns off the for loop so only one key is used
         }
@@ -746,7 +802,6 @@ void door6(){
 
         if(keyPressed && key == 'k'){ //unlocks the door
           keyring.get(i).used = true;
-          keyring.remove(i);
           lock6 = false;
           i=-1; //turns off the for loop so only one key is used
         }
@@ -780,7 +835,6 @@ void door7(){
 
         if(keyPressed && key == 'k'){ //unlocks the door
           keyring.get(i).used = true;
-          keyring.remove(i);
           lock7 = false;
           i=-1; //turns off the for loop so only one key is used
         }
