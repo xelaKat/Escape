@@ -129,15 +129,19 @@ void map6(){
 }
 
 void map7(){
-    Barrier[] map7 = new Barrier[6];
-    map7[0] = new Barrier(0,120,150,10);
-    map7[1] = new Barrier(0,580,150,10);
+    Barrier[] map7 = new Barrier[8];
+
+    //box for big ghost
+    map7[0] = new Barrier(300,300,200,10);
+    map7[1] = new Barrier(300,300,10,200);
+    map7[2] = new Barrier(490,300,10,200);
+    map7[3] = new Barrier(300,490,200,10);
 
     //walls
-    map7[2] = new Barrier(0,-5,345,5);
-    map7[3] = new Barrier(455,-5,345,5);
-    map7[4] = new Barrier(800,0,5,800);
-    map7[5] = new Barrier(-5,0,5,800);
+    map7[4] = new Barrier(0,-5,345,5);
+    map7[5] = new Barrier(455,-5,345,5);
+    map7[6] = new Barrier(800,0,5,800);
+    map7[7] = new Barrier(-5,0,5,800);
     Maps.add(map7);
 }
 
