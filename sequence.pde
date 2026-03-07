@@ -178,7 +178,9 @@ void sequence() {
     if(dist(400,700,p1.x,p1.y)<=110 && keyring.get(0).collected && keyring.get(1).collected && keyring.get(2).collected && keyring.get(3).collected && keyring.get(4).collected && keyring.get(5).collected){
       circle(400,700,40); //makes the circle more visible
       message_13();
-      keyring.add(new Key(400,100,5,true)); //special key
+      if(keyring.size()<7){
+        keyring.add(new Key(400,100,5,true)); //special key
+      }
     }
     else if(dist(400,700,p1.x,p1.y)<=110){
       circle(400,700,40); //makes the circle more visible
@@ -253,16 +255,54 @@ void sequence() {
       ghosts.add(new Ghost(775,775,3,20));
     }
 
+    if(p1.x>650 && p1.x<800 && p1.y<350 && p1.y>200){
+      ghosts.add(new Ghost(random(300,500),random(300,500),random(1,4),20));
+    }
+    else if(p1.x>0 && p1.x<150 && p1.y<250 && p1.y>100){
+      ghosts.add(new Ghost(random(300,500),random(300,500),random(1,4),20));
+    }
+    else if(p1.x>0 && p1.x<150 && p1.y>500 && p1.y<650){
+      ghosts.add(new Ghost(random(300,500),random(300,500),random(1,4),20));
+    }
+    else if(p1.x>650 && p1.x<800 && p1.y>550 && p1.y<700){
+      ghosts.add(new Ghost(random(300,500),random(300,500),random(1,4),20));
+    }
+
     if(p1.y==800){ //go to map8
       current_map = 8;
       p1.y = 5;
       ghosts.remove(0);
+      for(int i = ghosts.size()-1; i > -1; i--){
+        ghosts.remove(0);
+      }
     }
 
     //room number
     textSize(50);
     fill(180);
     text("7", 400, 400);
+
+    //ghost line - crossing this line wakes up dormant ghosts
+    strokeWeight(5);
+    stroke(180);
+    //cell1
+    line(650,200,800,200);
+    line(650,350,800,350);
+    line(650,200,650,350);
+    //cell2
+    line(0,100,150,100);
+    line(0,250,150,250);
+    line(150,100,150,250);
+    //cell3
+    line(0,500,150,500);
+    line(0,650,150,650);
+    line(150,500,150,650);
+    //cell4
+    line(650,550,800,550);
+    line(650,700,800,700);
+    line(650,550,650,700);
+    strokeWeight(1);
+    noStroke();
 
     //doorways
     fill(50, 230, 50); //green - unlocked
@@ -278,7 +318,7 @@ void sequence() {
       current_map = 7;
       p1.y = 795;
       p1.prevy = 795; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
-      ghosts.add(new Ghost(400,600,3,100)); //big boss ghost
+      ghosts.add(new Ghost(400,600,4,100)); //big boss ghost
     }
 
     //room number
@@ -381,7 +421,7 @@ void message_3(){
 //// Message that plays on map7 ////
 float counter_5 = 0;
 String display_5 = "";
-String[] message_quint = {"O", "M", "G"};
+String[] message_quint = {"Y", "O", "U", " ", "S", "H", "A", "L", "L", " ", "N", "O", "T", " ", "P", "A", "S", "S"};
 void message_5(){
   pause = true; //stops all movement
   textSize(24);
@@ -389,12 +429,12 @@ void message_5(){
   //thought bubble
   stroke(180); //a dim white
   fill(255,35); //opacity 35
-  rect(400-textWidth("   " + display_5)/2,272,textWidth(display_5 + "   "),40,25);
+  rect(400-textWidth("   " + display_5)/2,222,textWidth(display_5 + "   "),40,25);
   noStroke();
 
   ///display message
   fill(255);
-  text(display_5, 400,300);
+  text(display_5, 400,250);
 
   if(counter_5%1==0 && counter_5<message_quint.length){
     display_5 += message_quint[int(counter_5)];
@@ -428,7 +468,7 @@ void message_6(){
   if(counter_6%1==0 && counter_6<message_hex.length){
     display_6 += message_hex[int(counter_6)];
   }
-  counter_6+=0.25; //adding 0.25 gives the text typing effect a slight delay - basically it's just for aesthetics
+  counter_6+=0.50; //adding 0.50 gives the text typing effect a slight delay - basically it's just for aesthetics
 
   //determines when to turn off pause (after the message plays plus a little time)
   if(counter_6>message_hex.length+12){ 
@@ -734,20 +774,33 @@ void door3(){
 
 void door4(){
   if(lock4){ //is the door locked?
-    int key_count = 0; //count makes sure the message only shows up if EVERY key in the keyring is uncollected
     textSize(20);
-    if(keyring.size() == 7 && keyring.get(6).collected){ //if player has a key that isn't used,
-      text("press 'k' to use special key", 115,770);
+    if(keyring.size()==7 && keyring.get(6).collected){
+      text("you only have one shot...", 115,770);
 
       if(keyPressed && key == 'k'){ //unlocks the door
-        keyring.get(5).used = true;
+        keyring.get(6).used = true;
         lock4 = false;
       }
     }
-    else{ //if player doesn't have a key, tell the player they don't have a key
-        text("special key required", 95,770); // :( sad
+      else{
+        text("special key required", 95, 760);
       }
-  }
+    }
+    // for(int i = keyring.size()-1; i>-1; i--){ //goes through every key in keyring
+    //   if(keyring.get(i).special){
+    //     text("press 'k' to use special key", 115,770);
+
+    //    if(keyPressed && key == 'k'){ //unlocks the door
+    //      keyring.get(6).used = true;
+    //      lock4 = false;
+    //    }
+    //  }
+    //   else{ //if player doesn't have a key, tell the player they don't have a key
+    //       text("special key required", 95,770); // :( sad
+    //     }
+    // }
+  
   if(!lock4){ //if not locked, then you can enter!
     current_map = 4;
     p1.y = 5;
@@ -857,6 +910,6 @@ void door7(){
     ghosts.remove(2); //deletes prev ghosts
     ghosts.remove(1); //deletes prev ghosts
     ghosts.remove(0); //deletes prev ghosts
-    ghosts.add(new Ghost(400,600,3,100)); //big boss ghost
+    ghosts.add(new Ghost(400,600,4,100)); //big boss ghost
   }
 }
