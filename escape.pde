@@ -39,6 +39,7 @@ int instruction_count = 0;
 
 //Images
 PImage keys; //ATTRIBUTION: <a href="https://www.flaticon.com/free-icons/key" title="key icons">Key icons created by Freepik - Flaticon</a>
+PImage special_key;
 
 ///////////////////
 
@@ -49,12 +50,13 @@ void setup(){
 
   //Keys
   keys = loadImage("key.png");
+  special_key = loadImage("special_key.png");
   keyring = new ArrayList<Key>();
   keyring.add(new Key(720,720,1,false)); //map1
   keyring.add(new Key(600,100,2,false)); //map2
   keyring.add(new Key(600,400,2,false)); //map2
   keyring.add(new Key(730,730,3,false)); //map3
-  keyring.add(new Key(350,350,1,false)); //map5
+  keyring.add(new Key(350,350,5,false)); //map5
   keyring.add(new Key(60,60,6,false)); //map6
 
   //map initialization and declaration center
