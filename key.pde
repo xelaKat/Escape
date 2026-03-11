@@ -16,7 +16,8 @@ class Key{ //UNFINISHED
     }
 
     void display(){
-        image(keys,x,y);
+        if(special) image(special_key,x,y);
+        else image(keys,x,y);
     }
 
     boolean collision(){
