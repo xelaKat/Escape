@@ -24,6 +24,7 @@ Barrier(float _x, float _y, float l,float w){
   }
   
   void display(){ //displays barriers on screen
+    fill(255);
     rect(x-final_speed,y-final_speed,x_length+2*final_speed,y_length+2*final_speed);
     //final_speed is required to make the barrier visually aligned with the code
   }
@@ -39,7 +40,7 @@ enum checkResult {
 
 //barrier collision logic
 checkResult collisionX(){ //checks if the player is touching the barrier horizontally
-  for(Barrier b: map1){
+  for(Barrier b: Maps.get(current_map)){
     boolean overlapX = p1.x + p1.size >= b.x && p1.x - p1.size <= b.endx;
     boolean overlapY = p1.y + p1.size >= b.y && p1.y - p1.size <= b.endy;
       if (overlapX && overlapY) { 
@@ -56,7 +57,7 @@ checkResult collisionX(){ //checks if the player is touching the barrier horizon
 }
 
 checkResult collisionY(){ //checks if the player is touching the barrier vertically
-  for(Barrier b: map1){
+  for(Barrier b: Maps.get(current_map)){
     boolean overlapX = p1.x + p1.size >= b.x && p1.x - p1.size <= b.endx;
     boolean overlapY = p1.y + p1.size >= b.y && p1.y - p1.size <= b.endy;
       if (overlapX && overlapY) { 
