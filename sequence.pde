@@ -320,6 +320,14 @@ void sequence() {
       p1.prevy = 795; //makes sure the ghost will immediately go to the new position instead of the old position (which is opposite of where the player is)
       ghosts.add(new Ghost(400,600,4,100)); //big boss ghost
     }
+    if(p1.y==590 && p1.x>=300 && p1.x<=500){
+      fill(255);
+      textSize(20);
+      text("You have one key remaining. Use key?", 410,540);
+      if(keyPressed && key=='k'){
+        end_game = true;
+      }
+    }
 
     //room number
     textSize(50);
@@ -329,6 +337,7 @@ void sequence() {
     //doorways
     fill(50, 230, 50); //green - unlocked
     rect(0, -5, 800, 10); //doorway to map7
+    rect(300,600,200,5); //door to the ESCAPE!!!!
   }
 }
 
