@@ -68,3 +68,4 @@ class Ghost{
             game_over = true;
         }
     }
+}
