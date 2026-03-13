@@ -147,6 +147,6 @@ void map7(){
 
 void map8(){
     Barrier[] map8 = new Barrier[1];
-    map8[0] = new Barrier();
+    map8[0] = new Barrier(305,610,190,10);
     Maps.add(map8);
 }
