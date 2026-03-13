@@ -31,6 +31,7 @@ boolean intro = true;
 boolean tutorial = false;
 boolean game_start = false;
 boolean game_over = false;
+boolean end_game = false;
 boolean pause = false; //pause controls whether the player or ghost(s) can move
 
 //Instructions
@@ -56,7 +57,7 @@ void setup(){
   keyring.add(new Key(600,100,2,false)); //map2
   keyring.add(new Key(600,400,2,false)); //map2
   keyring.add(new Key(730,730,3,false)); //map3
-  keyring.add(new Key(350,350,5,false)); //map5
+  keyring.add(new Key(375,575,5,false)); //map5
   keyring.add(new Key(60,60,6,false)); //map6
 
   //map initialization and declaration center
@@ -79,19 +80,22 @@ void setup(){
 }
 
 void draw(){
-  if(keyPressed && key == 'q'){ //allows me to skip the intro sequence when testing, or else it just takes too long lol
-    game_start = false;
-    tutorial = false;
-    pause = false;
-  }
+  // if(keyPressed && key == 'q'){ //allows me to skip the intro sequence when testing, or else it just takes too long lol
+  //   game_start = false;
+  //   tutorial = false;
+  //   pause = false;
+  // }
   if(tutorial){
-    tutorial();
+    tuTorial();
   }
   else if(game_start){ //intro sequence
-    game_start();
+    gameStart();
   }
   else if(game_over){
-    game_over();
+    gameOver();
+  }
+  else if(end_game){
+    endGame();
   }
   else{
     background(0);
@@ -135,11 +139,11 @@ void draw(){
   }
 
   if(intro){ //goes to start screen
-    intro();
+    inTro();
   }
 
   if(!intro && tutorial){
-    tutorial();
+    tuTorial();
   }
 }
 
@@ -158,8 +162,7 @@ void keyReleased(){
   if (key=='d' || keyCode==RIGHT) rightPressed = false;
 }
 
-void intro(){ //start screen
-  noLoop();
+void inTro(){ //start screen
   background(0);
   fill(255);
 
@@ -176,7 +179,7 @@ void intro(){ //start screen
   text("Click anywhere to start",400,700);
 }
 
-void tutorial(){
+void tuTorial(){
   textSize(30);
 
   if(frameCount<100){ //fading animation
@@ -189,7 +192,9 @@ void tutorial(){
     text(instructions[instruction_count-1], 400,390); //shows the last instruction
     frameCount = 0;   
     tutorial = false; 
+    pause = false;
     game_start = true;
+    loop();
   }
 
   //VISUALS to accompany the instructions
@@ -242,7 +247,7 @@ void tutorial(){
   }
 }
 
-void game_start(){
+void gameStart(){
   if(frameCount>=120 && frameCount<=180){
     textSize(24);
 
@@ -269,20 +274,36 @@ void game_start(){
   }
 }
 
-void game_over(){
-  noLoop();
+void gameOver(){
   background(0);
   fill(255);
 
   textSize(50);
-  text("GAME OVER", 400,300);
-
-  //final time
-  int time_min = int(frameCount/3600);
-  int time_sec = int(frameCount%60);
+  text("YOU DIED", 400,300);
   
-  textSize(35);
-  text("Final time: " + time_min + " minutes " + time_sec + " seconds", 400,400);
+  if(lock4){
+    textSize(35);
+    text("Click to respawn", 400,400);
+  }
+  else{
+    textSize(35);
+    text("No more chances. You only had one shot.", 400,400);
+  }
+}
+
+int end_game_count = 0;
+void endGame(){
+  background(50, 230, 50);
+  end_game_count++;
+  if(end_game_count > 60){
+    background(255);
+    fill(0);
+    textSize(50);
+    text("ESCAPE!", 400,300);
+    textSize(35);
+    text("Good job!", 400,350);
+    noLoop();
+  }
 }
 
 void mouseClicked(){
@@ -294,10 +315,11 @@ void mouseClicked(){
     intro = false;
     tutorial = true;
     pause = true;
+    frameCount = 0;
     loop();
   }
 
-  if(game_over){ //resets the time - FIX
+  if(game_over && lock4){
     game_over = false;
     current_map = 0;
     for(int i = ghosts.size()-1; i>-1; i--){
@@ -306,6 +328,5 @@ void mouseClicked(){
     p1.x = 400;
     p1.y = 400;
     pause = false;
-    loop();
   }
 }
