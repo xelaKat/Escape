@@ -1,4 +1,4 @@
-class Key{ //UNFINISHED
+class Key{
     float x,y;
     float size = 50;
     boolean collected;
