@@ -25,7 +25,7 @@ class Player{ //player! aka you
   }
   
   void move_right() { //move right
-    if(!tutorial){
+    if(!pause){
       x+=speed;
     }
     if((collisionX()==checkResult.TouchLeft) || x>width) { //predicts collision - if yes, goes back
@@ -33,21 +33,21 @@ class Player{ //player! aka you
     }
   }
   void move_left() { //move left
-    if(!tutorial){
+    if(!pause){
       x-=speed;
     }
     if((collisionX()==checkResult.TouchRight) || x<0) //predicts collision - if yes, goes back
       x+=speed;
   }
   void move_up() { //move up
-    if(!tutorial){
+    if(!pause){
       y-=speed;
     }
     if((collisionY()==checkResult.TouchDown) || y<0) //predicts collision - if yes, goes back
       y+=speed;
   }
   void move_down() { //move down
-    if(!tutorial){
+    if(!pause){
       y+=speed;
     }
     if((collisionY()==checkResult.TouchUp) || y>height) //predicts collision - if yes, goes back
